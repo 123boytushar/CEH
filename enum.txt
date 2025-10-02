@@ -1,0 +1,204 @@
+                                                                  Enumeration
+
+#Enumeration and its Types
+
+Enumeration is defined as the process of extracting user names, machine names, network resources, shares and services from a system. In this phase, the attacker creates an active connection to the system and performs directed queries to gain more information about the target. The gathered information is used to identify the vulnerabilities or weak points in system security and tries to exploit in the System gaining phase
+
+
+#Which Types of Details we find in Enumeration :
+
+1)Network Resource and shares
+2)Users and Groups
+3)Routing tables
+4)Auditing and Service settings
+5)Machine names
+6)Applications and banners
+7)DNS details
+8)Machine name
+9)Dirctory enumerate
+
+#Services and Port to Enumerate
+
+TCP 53: DNS Zone transfer
+TCP 135: Microsoft RPC Endpoint Mapper
+TCP 137: NetBIOS Name Service
+TCP 139: NetBIOS session Service (SMB over NetBIOS)
+TCP 445: SMB over TCP (Direct Host)
+UDP 161: SNMP
+TCP/UDP 389: LDAP
+TCP 25: Simple Mail Transfer Protocol (SMTP)
+sudo nmap -sV --script vuln 192.168.44.32 -oN vuln_scan.txt
+=========================================================================================================================================================
+#NetBIOS Enumeration
+
+NetBIOS stands for Network Basic Input Output System. It Allows computer communication over a LAN and allows them to share files and printers.
+NetBIOS names are used to identify network devices over TCP/IP (Windows). It must be unique on a network, limited to 16 characters where 15 characters are used for the device name and the 16th character is reserved for identifying the type of service running or name record type.
+
+@Attackers use the NetBIOS enumeration to obtain:
+
+1)List of computers that belong to a domain
+2)List of shares on the individual hosts on the network
+3)Policies and passwords
+nmap -A -sV -T4 --script nbstat.nse -p 139 -Pn
+nmap -sV -v --script nbstat.nse <target IP address>
+nbtscan -rvh <target>
+smbmap -H <target>
+nmap --script smb-enum-* -p 445 <IP>
+nmap --script smb-vuln* -p 139,445 192.168.10.9 -d
+enum4linux -a <target>
+=========================================================================================================================================================
+#SNMP Enumeration = img
+
+SNMP (Simple Network Management Protocol) is an application layer protocol which uses UDP protocol to maintain and manage routers, hubs and switches other network devices on an IP network. SNMP is a very common protocol found enabled on a variety of operating systems like Windows Server, Linux & UNIX servers as well as network devices like routers, switches etc.
+SNMP enumeration is used to enumerate user accounts, passwords, groups, system names, devices on a target system. 
+
+It consists of three major components:
+1)Managed Device: A managed device is a device or a host (technically known as a node) which has the SNMP service enabled. These devices could be routers, switches, hubs, bridges, computers etc.
+
+2)Agent: An agent can be thought of as a piece of software that runs on a managed device. Its primary job is to convert the information into SNMP compatible format for the smooth management of the network using SNMP protocol.
+
+3)Network Management System (NMS): These are the software systems that are used for monitoring of the network devices.
+
+SolarWinds ( best SNMP enumeration tool) - www.solarwinds.com
+command line tools: SNMP-WALK, SNMP-CHECK
+nmap -sU -p 161 <Target IP Address>
+auxiliary/scanner/snmp/snmp_enum
+============================================================================================================================================================
+#SMTP Enumeration = img
+The Simple Mail Transport Protocol is used to send email messages as opposed to POP3 or IMAP which can be used to both send and receive messages. SMTP relies on using Mail Exchange (MX) servers to direct the mail to via the Domain Name Service, however, should an MX server not be detected, SMTP will revert and try an A or alternatively SRV records. SMTP generally runs on port 25.
+
+#telnet 192.168.223.128 25
+#vrfy root
+#vrfy admin
+#vrfy msfadmin
+#vrfy user
+
+#msfconsole
+#use auxiliary/scanner/smtp/smtp_enum
+#auxiliary(smtp_enum) > set rhosts 192.168.1.107
+#auxiliary(smtp_enum) > set rport 25
+#auxiliary(smtp_enum) > set USER_FILE /root/Desktop/user.txt
+#auxiliary(smtp_enum) > exploit
+
+nmap -p 25 --script=smtp-enum-users 192.168.0.27
+nmap -p 25 --script=smtp-open-relay 192.168.0.27
+nmap -p 25 --script=smtp-commands 192.168.0.27
+============================================================================================================================================================
+#DNS Enumeration = img
+DNS enumeration is the process of locating all the DNS servers and their corresponding records for an organization. DNS enumeration will yield usernames, computer names, and IP addresses of potential target systems. The list of DNS record provides an overview of types of resource records (database records) stored in the zone files of the Domain Name System (DNS). The DNS implements a distributed, hierarchical, and redundant database for information associated with Internet domain names and addresses.
+
+dnsenum
+shodan.io = extension
+#enumerating directories
+feroxbuster
+dirb
+gobuster
+dirsearch
+============================================================================================================================================================
+#80/443 - HTTP/HTTPS =img
+
+#HTTP response status codes
+1)Informational responses (100 – 199)
+2)Successful responses (200 – 299)
+3)Redirection messages (300 – 399)
+4)Client error responses (400 – 499)
+5)Server error responses (500 – 599)
+
+#HTTP requests are used to communicate with servers over the web, and there are several types of requests, each serving a different purpose. The most common HTTP request methods are:
+    
+    GET: Retrieves data from the server. It is the most common request type and is used to request data from a specified resource. For example, requesting a webpage or an image.
+
+    POST: Submits data to be processed to a specified resource. This is often used when submitting form data or uploading a file. The server processes the data and may return a result or acknowledgment.
+
+    PUT: Updates a specified resource with new data. It is used to send data to the server to update or replace the current representation of the resource.
+
+    DELETE: Removes a specified resource from the server. It is used to delete data from the server, such as removing a user profile or a specific item.
+
+    PATCH: Partially updates a resource. Unlike PUT, which replaces the entire resource, PATCH is used to make partial updates or changes to the resource.
+
+    HEAD: Retrieves the headers of a resource without the actual content. It is similar to GET, but the response only contains header information, not the body. This is useful for checking metadata like content length or type.
+
+    OPTIONS: Describes the communication options for the target resource. It allows clients to determine the methods and operations supported by the server for a particular resource.
+
+    TRACE: Performs a diagnostic trace of the path taken by the request to reach the server. It is mainly used for debugging and is rarely used in practice.
+
+    CONNECT: Establishes a tunnel to the server, typically used for SSL/TLS connections. It is often used in proxy scenarios to create a secure connection between the client and the server.
+
+#HTTP Security Response Headers Cheat Sheet
+1)X-Frame-Options
+2)X-XSS-Protection
+3)X-Content-Type-Options
+4)Referrer-Policy
+5)Content-Type
+6)Set-Cookie
+7)Strict-Transport-Security (HSTS)
+8)Expect-CT
+9)Content-Security-Policy 
+10)Access-Control-Allow-Origin
+11)Cross-Origin-Opener-Policy (COOP)
+12)Cross-Origin-Embedder-Policy (COEP)
+13)Cross-Origin-Resource-Policy (CORP)
+14)Permissions-Policy (formerly Feature-Policy)
+15)FLoC (Federated Learning of Cohorts)
+16)Server
+17)X-Powered-By
+18)X-AspNet-Version
+19)X-AspNetMvc-Version
+20)X-DNS-Prefetch-Control
+21)Public-Key-Pins (HPKP)
+
+
+
+#tools
+1)nikto
+============================================================================================================================================================
+#NTP Enumeration
+
+The Network Time Protocol is a protocol for synchronizing time across your network, this is especially important when utilizing Directory Services. There exists a number of time servers throughout the world that can be used to keep systems synced to each other. NTP utilizes UDP port 123. Through NTP enumeration you can gather information such as lists of hosts connected to NTP server, IP addresses, system names, and OSs running on the client system in a network. All this information can be enumerated by querying NTP server.
+
+nmap -v -p 123 -sU -Pn <IP>
+nmap -v -sV -p 123 -sU -Pn  <IP>
+Wireshark
+============================================================================================================================================================
+#Wordpress web-site information gathering
+
+https://example.com/robots.txt
+https://example.com/feed
+https://example.com/readme.html
+https://example.com/xmlrpc.php
+
+#tools
+1)wpscan
+============================================================================================================================================================
+#common port to know
+21:   ftp
+22:   ssh
+23:   telnet
+25:   smtp
+53:   domain name system(DNS)
+80:   http
+110:  pop3
+111:  rpcbind
+135:  msrpc
+139:  netbios-ssn
+143:  imap
+443:  https
+445:  microsoft-ds (smb)
+993:  imaps
+995:  pop3s
+1723: pptp
+3306: mysql
+3389: ms-wbt-server
+5900: vnc
+8080: http-proxy
+============================================================================================================================================================
+
+#metasploit framwork
+banner = to change banner
+msfconsole -q = nabber will not come
+show exploits
+show payloads
+show exploits = windows/tftp/quick_pro_mode = show payloads = info (to see how to use that script)
+show targets (on which platform we can use)
+show advanced (get more details)
+back (to go back)

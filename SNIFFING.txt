@@ -1,0 +1,165 @@
+===========================================================================Sniffing=========================================================================
+
+# Basic
+	With sniffing, you can monitor all sorts of traffic either protected or unprotected with connected network.
+	The attacker can reveal information from it such as usernames and passwords.
+	Anyone within the same LAN can sniff the packets.
+
+# Working of Sniffers
+	In the process of sniffing, the attacker gets connected to the target network to start sniffing.
+	Capture the packet in network 
+	The attacker decrypt the packets to extract information.
+
+============================================================================================================================================================
+#Sniffing types 
+
+#Passive Sniffing
+Passive sniffing refers to sniffing through a hub, wherein the traffic is sent to all ports
+It involves monitoring packets sent by others without sending any additional data packets in the network traffic
+In a network that uses hubs to connect systems, all hosts on the network can see the all traffic, and therefore, the attacker can easily capture traffic going through the hub
+Hub usage is an outdated approach. Most modern networks now use switches
+
+#Active Sniffing
+Active sniffing is used to sniff a switch-based network
+Active sniffing involves injecting Address Resolution Packets (ARP) into the network to flood the switch's Content Addressable Memory (CAM) table, which keeps track of host-port connections
+
+1)mac flooding
+2)dhcp attacks
+3)apr poisoning
+4)switch port stealing
+5)spoofing attack
+6)dns poisoning
+============================================================================================================================================================
+
+# Spoofing Attacks 
+
+# MAC Attacks
+	**Media Access Control** (MAC) is the physical address of a device. MAC address is a 48-bit unique identification number that is assigned 
+	  to a network device for communication at data-link layer (layer 2).
+	
+	# MAC Flooding
+		Tool - **macof**
+	python3 macof.py -i <network interface > -s <src ip> -d <dst ip>
+	python3 macof.py -i eth0 -s 192.168.0.111 -d 192.168.174.130 
+
+	
+	#Linux# 
+	MAC Changer ***github link = https://github.com/sbdchd/macchanger*** :-	
+                                      https://github.com/Debajyoti0-0/ToriFY
+
+	*Automatic Method*
+	- ifconfig and check your mac address 
+	- random mac = macchanger -r <interface>
+		       macchanger -r eth0 
+	
+	*Manual Method*
+	- ifconfig and check your mac address 
+	- command to change mac adress = macchanger -m <mac address> <interface>
+					 macchanger -m 00-11-22-33-44-55 eth0
+	*Other*
+	
+	-ifconfig (check mac)
+	-ifconfig eth0 down
+	-ifconfig eth0 hw ether <mac >
+	-ifconfig eth0 up
+	-now check your mac it is changed 
+		
+	#Windows#
+
+	Technitium MAC address Changer (Windows) :-
+	https://technitium.com/tmac/
+	*Automatic Mac* 
+          
+	- Start Application
+	- click yes when ask for .tpf (only first time)
+	- click on "Random MAC Address"
+	- Now you can see mac is changed
+
+	*Manual Method*
+	
+	- Start Application
+	- Select Presets 
+	- Then click New 
+	- Then give Preset Name
+	- Then click on MAC Address and Go to Use Custom
+	- And then type Your Target Mac Address 
+	- Then Save
+	- Then click your Presets Name which you give
+	- Then click on Apply
+	- Now your can see Mac is Changed
+============================================================================================================================================================	# DHCP Attacks
+	# Dynamic Host Configuration Protocol (DHCP) - DHCP is the process of allocating the IP address dynamically so these addresses are assigned
+	  automatically to connected device
+
+
+	- **IPv4 Ports**:
+    	  - UDP port 67 for Server
+     	  - UDP port 68 for Client
+-----------------------------------------------
+	- **IPv6 Ports**:
+    	  - UDP port 546 for Client
+  	  - UDP port 547 for Server
+
+https://github.com/yoelbassin/DHCP-starvation
+============================================================================================================================================================
+# ARP Poisoning
+	# Address Resolution Protocol (ARP)
+		The Address Resolution Protocol (ARP) is a communication protocol 
+	# ARP Spoofing Attack
+		Attacker send forged(fake) ARP packets over Local Area Network (LAN). In this case, switch will update the attacker's MAC address with the IP address
+		of a legitimate user or server, then start forwarding the packets to the attacker. Attacker can steal information by extracting it from packets.(legitimate
+		user ki ip ke sath apni(attacker) mac address ko connect ke lena taki wo packet hamer pass aae )
+	
+		ARP Poisoning used for:
+			- Session hijacking
+			- Denial-of-Service attacks
+			- Man-in-the-Middle attacks
+			- Packet sniffing
+			- Data interceptions
+			- Stealing passwords
+1)Ettercap
+============================================================================================================================================================
+#dns poisoning
+
+DNS poisoning is a technique that tricks a DNS server into believing that it has received authentic information when it has not received any
+It results in the substitution of a false IP address at the DNS level where the web addresses are converted into numeric IP addresses
+It allows the attacker to replace IP address entries for a target site on a given DNS server with the IP address of the server he/she controls
+Attackers use DNS poisoning tools such as DerpNSpoof to create fake DNS entries for the server (containing malicious content) with names similar to that of the target server
+
+#DNS poisoing
+route -n = gateway
+apt install gedit
+gedit /var/www/html/index.html
+systemctl start apache2
+gedit /etc/ettercap/etter.conf = ec_uid=0 ec_gid=0 = linux=uncomment
+gedit /etc/ettercap/etter.dns 
+vulnweb.com A 192.168.1.5
+*.vulnweb.com A 192.168.1.5
+www.vulnweb.com PTR 192.168.1.5
+ettercap -T -q -i wlan0 -M arp:remote /192.168.1.6// /192.168.1.19 router_ip// -P dns_spoof
+============================================================================================================================================================# Wireshark
+	Filters in Wireshark:
+		- `==`			Equal
+		- `eq`			Equal
+		- `!=`			Not equal
+		- `ne`			Not equal
+		- ip.src  	source addresses (Filter ip )
+		- ip.dst 	destin addresses
+		- ip.addr 	Match at both the places (source and destin)
+ip.addr == ip (for ip information)
+ip.src == ip (source ip information)
+ip.dst == ip (destination ip information)
+tcp (tcp packet ke liye)
+udp (udp packet ke liye)
+tcp or udp (see both protocol packet)
+http (http packets)
+http.response.code == 200
+tcp.port == 443
+tcp.port == 80
+udp.port == 53
+ip.src == 192.168.1.0/24
+============================================================================================================================================================
+# Sniffing Countermeasures
+		- Use Secure Protocol instead of base Protocols (HTTPS over HTTP, SFTP over FTP, etc)
+		- Switch instead of Hub (Hub broadcast packet by default, but Switch does not)
+		- Strong encryption protocol (Strong Encrypted data is secure to transmit over any type of network)

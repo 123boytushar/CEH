@@ -1,0 +1,140 @@
+==============================================================IDS,IPS,Firewalls and Honeypots===============================================================
+
+#Firewall
+It is a wall of separation between the insecure internet and secure internal network. Firewall monitors incoming and outgoing connections, for various rules and patterns, and filters the connections passing through them.
+
+#Firewall Types 
+#Firewall Software Types
+1)  Windows Firewall (built-in for Windows operating systems)
+2)  pfSense (open-source firewall and router software)
+3)  iptables (Linux-based firewall tool)
+4)  UFW (Uncomplicated Firewall) (Linux-based firewall interface)
+5)  ZoneAlarm (personal firewall software)
+6)  Comodo Firewall (free personal firewall software)
+7)  Sophos XG Firewall (advanced firewall for businesses)
+8)  McAfee Total Protection Firewall (firewall as part of a security suite)
+9)  Bitdefender Firewall (included in Bitdefender security products)
+10) TinyWall (lightweight, no-frills firewall for Windows)
+
+#Firewall Hardware Types
+1)  Cisco ASA (Adaptive Security Appliance) (enterprise-grade firewall appliance)
+2)  Palo Alto Networks Next-Generation Firewall (advanced threat prevention)
+3)  Fortinet FortiGate (enterprise firewall appliances with integrated security features)
+4)  Check Point Firewalls (enterprise security solutions with various models)
+5)  SonicWall TZ Series (small-to-medium business firewall appliance)
+6)  Juniper Networks SRX Series (high-performance security services gateway)
+7)  WatchGuard Firebox (firewall appliances for small and medium-sized businesses)
+8)  Barracuda CloudGen Firewall (cloud-focused firewall appliance)
+9)  Netgate SG Series (hardware appliances for pfSense)
+10) Sophos XG Firewall (hardware-based solution for network security)
+============================================================================================================================================================
+#IDS: Intrusion Detection System
+An intrusion detection system (IDS) is a software system or hardware device that inspects all inbound and outbound network traffic for suspicious patterns that may indicate a network or system security breach
+The IDS checks traffic for signatures that match known intrusion patterns and signals an alarm when a match is found
+Depending on the traffic to be monitored, the IDS is placed outside/inside the firewall to monitor suspicious traffic originating from outside/inside the network
+An intrusion prevention system (IPS) is also considered as an active IDS since it is capable of not only detecting the intrusions but also preventing them
+
+#Types of Intrusion Detection System = img
+
+1) Network-Based Intrusion Detection Systems
+These systems typically consist of a black box that is placed on the network in a promiscuous mode, listening for patterns indicative of an intrusion
+It detects malicious activity such as Denial-of-Service attacks, port scans, or even attempts to crack into computers by monitoring network traffic
+
+2) Host-Based Intrusion Detection Systems = img
+These systems usually include auditing for events that occur on a specific host
+These are not as common, due to the overhead they incur by having to monitor each system event
+
+#Intrusion Prevention System (IPS)
+Intrusion prevention systems (IPS) are considered as active IDS, as they are capable of not only detecting intrusions but also preventing them. IPS are continuous monitoring systems that often sit behind firewalls as an additional layer of protection. Unlike IDS, which are passive, IPS are placed inline in the network, between the source and the destination, to actively analyze the network traffic and make automated decisions regarding the traffic that is entering the network.
+============================================================================================================================================================
+#How an IDS Detects an Intrusion?
+1) Signature Recognition
+Signature recognition, also known as misuse detection, tries to identify events that indicate an abuse of a system or network resource
+
+2) Anomaly Detection
+It detects the intrusion based on the fixed behavioral characteristics of the users and components in a computer system
+
+3) Protocol Anomaly Detection
+It involves analyzing network traffic to detect deviations from established protocol standards or expected behavior patterns
+============================================================================================================================================================
+#Firewall Architecture 
+
+1) Bastion Host = img
+A bastion host is a computer system designed and configured to protect network resources from attacks
+Traffic entering or leaving the network passes through the firewall. It has two interfaces:
+a public interface directly connected to the Internet
+a private interface connected to the Intranet
+
+2) Screened Subnet = img
+The screened subnet or Demilitarized Zone (DMZ) contains hosts that offer public services The DMZ responds to public requests, and has no hosts accessed by the private network This private zone can not be accessed by Internet users
+
+3) Multi-homed Firewall = img
+In this case, a firewall with two or more interfaces is present that allows further subdivision of the network based on the specific security objectives of the organization
+============================================================================================================================================================
+#Techniques For Bypassing Waf
+1) using header spoofing
+Web application firewalls allow specific queries and syntaxes to originate from internal addresses
+Attackers abuse this functionality to send requests with spoofed headers using X-Forwarded-For to trick the target WAF and server into believing that the request originated from their internal network
+
+2) using Blacklist Detection
+Attackers fingerprint the target WAF to identify blacklisted keywords and create new regex and payloads with keywords not included in the blacklists
+Example list of keywords filtered: and, or, union
+SQL query that evades detection: 1 || (select username, pwd from employees where userID = 1001) = 'admin'
+
+3) Using Fuzzing/Brute-forcing
+First, attackers send payloads to the WAF connected to their local network to identify the payloads that can be used for evasion Attackers use wordlists such as Assetnote Wordlists (https://wordlists.assetnote.io) and SecLists (https://github.com) to perform fuzzing on the target network
+
+4)Abusing SSL/TLS ciphers
+Attackers footprint the target WAF to identify the supported ciphers by reading the vendor documentation
+Attackers use tools such as sslscan2 (https://github.com) to detect the ciphers supported by the web server
+If the attackers identify any cipher supported by the web server that is not supported by the WAF, they use that cipher to evade WAF using tools such as abuse-ssl-bypass-waf.py (https://github.com)
+============================================================================================================================================================
+Nac and Endpoint Security Evasion Techniques
+
+1)  VLAN Hopping
+2)  Process Injection
+3)  Hosting Phishing Sites
+4)  Reducing Entropy
+5)  Using Pre-authenticated Device
+6)  Using LoLBins
+7)  Passing Encoded Commands
+8)  Escaping the (local) AV Sandbox
+9)  Ghostwriting
+10) CPL (Control Panel) Side-Loading
+11) Fast Flux DNS Method
+12) Disabling Event Tracing for Windows
+13) Using Application Whitelisting
+14) Using ChatGPT
+15) Timing-based Evasion
+16) Evading "Mark of the Syscall"
+17) Dechaining Macros
+18) Using Metasploit Templates
+19) Signed Binary Proxy Execution
+20) Spoofing the Thread Call Stack
+21) Clearing Memory Hooks
+22) Windows Antimalware Scan Interface (AMSI)
+23) Shellcode Encryption
+24) In-memory Encryption of Beacon
+============================================================================================================================================================
+#Honeypot = img
+1) A honeypot is an information system resource that is expressly set up to attract and trap people who attempt to penetrate an organization's network
+
+2) It has no authorized activity, does not have any production value, and any traffic to it is likely to be a probe, attack, or compromise
+
+3) A honeypot can log port access attempts or monitor an attacker's keystrokes. These could be early warnings of a more concerted attack
+============================================================================================================================================================
+https://github.com/0xrajneesh/Suricata-IDS-Home-Lab
+apt install suricata
+cd /var/log/suricata/
+tail -f fast.log
+nmap -sS ip
+
+#snort
+apt update
+apt install snort
+snort -v
+snort --version
+gedit snort.conf
+cd /var/log/snort/
+tail -f fast.log
+nmap -sS ip
